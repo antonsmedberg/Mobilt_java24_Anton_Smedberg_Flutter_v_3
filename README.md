@@ -1,18 +1,27 @@
 # Reflector (Android + Web)
 
-Reflector är min lilla idé om ett gränssnitt som känns lika självklart på mobilen som i webbläsaren. Du gör dina val – namn, mörkt läge, volym – och får direkt se resultatet i en ren förhandsvisning. Jag har hållit det enkelt, lugnt och responsivt.
+Reflector är ett litet experiment byggt i Flutter som undersöker hur ett användargränssnitt kan kännas lika självklart i mobilen som i webbläsaren. Appen låter dig ange namn, välja mörkt läge och justera volym. Resultatet visas direkt i en förhandsvisning med en konsekvent känsla på båda plattformar.
 
-## Så här funkar det
+Målet har varit enkelhet: ett lugnt, responsivt gränssnitt utan onödiga distraktioner.
 
-- Profilsidan: skriv ett visningsnamn, växla mörkt läge, justera volym. “Save & Preview” sparar och går vidare.
-- Förhandsvisningen: visar dina val och en nätbild. Tillbaka fungerar både i webben och på Android.
-- Preferenserna sparas lokalt och följer med mellan starter.
+---
 
-## Varför just så här?
+## Funktioner
 
-Två skärmar, tydliga interaktioner och navigation som beter sig likadant på båda plattformar. Ingen överlast – bara det som behövs för en smidig upplevelse.
+- **Profilsidan**: Ange visningsnamn, växla mörkt läge och justera volym.  
+  “Save & Preview” sparar inställningarna och öppnar förhandsvisningen.  
+- **Förhandsvisningen**: Visar de sparade valen samt en bild hämtad från nätet.  
+- **Lokala preferenser**: Inställningar sparas med `shared_preferences` och finns kvar även efter att appen startats om.
 
-## Struktur i stora drag
+---
+
+## Varför den här strukturen?
+
+Projektet bygger på två sidor, tydliga interaktioner och navigering som fungerar likadant på Android och webb. Inga överflödiga funktioner, bara det som behövs för en stabil och smidig upplevelse.
+
+---
+
+## Projektstruktur
 
 ```
 lib/
@@ -26,24 +35,34 @@ web/index.html (brandat, favicon)
 test/user_prefs_test.dart
 ```
 
-## Små val som gör skillnad
+---
 
-- Material 3 med färgtema ger lugn bas; maxbredd (~560 px) gör läsningen behaglig på stora skärmar.
-- Spara‑knappen är inaktiverad tills formuläret är giltigt; en liten SnackBar bekräftar sparning.
-- Webbnavigering använder `go('/')` istället för “pop” för att undvika tom historik.
-- En lokal bild i profilen och en nätbild i förhandsvisningen – enkelt men effektfullt.
+## Designval
 
-## Kort om plattformarna
+- Material 3-tema ger lugn visuell bas.  
+- Maxbredd (~560 px) på webben gör text och innehåll mer lättläst.  
+- Spara-knappen är inaktiverad tills formuläret är giltigt; en SnackBar bekräftar sparning.  
+- Navigering på webben använder `go('/')` i stället för `pop` för att undvika tom historik.  
+- Profilbilden laddas lokalt, medan förhandsvisningen använder en nätbild.
 
-Webben bryr sig om URL och historik; därför använder jag `go('/')` när man går tillbaka från förhandsvisningen. På Android sköter systemet backstacken, och appen är låst i portrait för stabilitet. Känslan blir konsekvent på båda plattformar.
+---
 
-## Tekniskt i ett nötskal
+## Plattformsspecifikt
 
-- Navigering: `go_router` med två rutter (`/`, `/preview`).
-- Tillstånd & lagring: `UserPrefs` + `shared_preferences` (namn, mörkt läge, volym).
-- UI: Material 3, semantiska bildetiketter, tydliga etiketter och validering.
-- Ikoner: Android‑ikoner via `flutter_launcher_icons`, favicon i `web/index.html`.
-- API/utmaningar: ingen extern REST‑källa används; CORS för nätbilder beaktat; webben kan varna om trädsakning av ikoner, vilket är ofarligt.
+- **Webb**: Navigering och historik styrs via `go_router` och URL-hantering.  
+- **Android**: Backstack hanteras av systemet. Appen är låst i porträttläge för konsekvent upplevelse.
+
+---
+
+## Tekniskt
+
+- **Navigering**: `go_router` med två rutter (`/`, `/preview`).  
+- **Tillstånd & lagring**: `UserPrefs` + `shared_preferences` (namn, mörkt läge, volym).  
+- **UI**: Material 3, semantiska etiketter och formulärvalidering.  
+- **Ikoner**: Android-ikoner via `flutter_launcher_icons`, favicon för webben.  
+- **Utmaningar**: CORS för nätbilder på webben samt varningar om saknade ikoner (ofarligt).
+
+---
 
 ## Kom igång
 
